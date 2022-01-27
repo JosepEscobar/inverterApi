@@ -125,4 +125,3 @@ class DataSource():
         inverter = getDevice(0x0665, 0x5161, None)
         output = getDeviceValues(inverter)
         return Status(output)
-
