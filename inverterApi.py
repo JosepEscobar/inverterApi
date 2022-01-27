@@ -7,7 +7,7 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>Distant Reading Archive</h1> <p>A prototype API for distant reading of science fiction novels.</p>"
+    return "<h1>inverter API</h1> <p>Documentation about inverter API. (Work in progress)</p>"
 
 @app.route('/rating/', methods=['GET'])
 def rating():

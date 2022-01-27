@@ -93,7 +93,7 @@ def getDeviceValues(dev):
             sys.exit("Could not detatch kernel driver from interface({0}): {1}".format(i, str(e)))
 
     sendCommand(dev, getCommand("QPIGS"))
-    inverterValues = getResult(dev)
+    inverterValues = getResult(dev).replace('(', '')
     inverterValuesArray = inverterValues.split(" ")
     usb.util.dispose_resources(dev)
 
@@ -109,7 +109,7 @@ def getDeviceStatus(dev):
             sys.exit("Could not detatch kernel driver from interface({0}): {1}".format(i, str(e)))
     
     sendCommand(dev, getCommand("QPIRI"))
-    inverterValues = getResult(dev)
+    inverterValues = getResult(dev).replace('(', '')
     inverterValuesArray = inverterValues.split(" ")
     usb.util.dispose_resources(dev)
     return inverterValuesArray
