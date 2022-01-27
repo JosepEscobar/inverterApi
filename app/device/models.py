@@ -91,22 +91,22 @@ class Status():
         print("arrayValues")
         print(arrayValues)
       
-        self.gridVoltatge = arrayValues[0]
-        self.gridFrequency = arrayValues[1]
+        self.gridVoltatge = float(arrayValues[0])
+        self.gridFrequency = float(arrayValues[1])
         self.acOutputVoltage = float(arrayValues[2])
         self.acOutputFrequency = float(arrayValues[3])
         self.acOutputApparentCurrent = int(arrayValues[4])
         self.acOutputActivePower = int(arrayValues[5])
         self.outputLoadPercent = int(arrayValues[6])
-        self.busVoltage = arrayValues[7]
+        self.busVoltage = int(arrayValues[7])
         self.batteryVoltage = float(arrayValues[8])
         self.batteryChargingCurrent = int(arrayValues[9])
         self.batteryCapacitypercent = int(arrayValues[10])
         self.inverterHeatSinkTemperature = int(arrayValues[11])
         self.pvInputCurrentForBattery = int(arrayValues[12])
         self.pvInputVoltage = float(arrayValues[13])
-        self.batteryVoltageFromScc = arrayValues[14]
-        self.batteryDischargeCurrent = arrayValues[15]
+        self.batteryVoltageFromScc = float(arrayValues[14])
+        self.batteryDischargeCurrent = int(arrayValues[15])
         self.deviceStatus = arrayValues[16]
         self.pvInputPower = int(arrayValues[19])
 
