@@ -85,28 +85,30 @@ class Status():
     batteryVoltageFromScc = ""
     batteryDischargeCurrent = ""
     deviceStatus = ""
+    pvInputPower = ""
     
     def __init__(self, arrayValues):
         print("arrayValues")
         print(arrayValues)
       
         self.gridVoltatge = arrayValues[0]
-        self.gridFrequency = arrayValues[0]
-        self.acOutputVoltage = arrayValues[1]
-        self.acOutputFrequency = arrayValues[2]
-        self.acOutputApparentCurrent = arrayValues[3]
-        self.acOutputActivePower = arrayValues[4]
-        self.outputLoadPercent = arrayValues[5]
-        self.busVoltage = arrayValues[6]
-        self.batteryVoltage = arrayValues[7]
-        self.batteryChargingCurrent = arrayValues[8]
-        self.batteryCapacitypercent = arrayValues[9]
-        self.inverterHeatSinkTemperature = arrayValues[10]
-        self.pvInputCurrentForBattery = arrayValues[11]
-        self.pvInputVoltage = arrayValues[12]
-        self.batteryVoltageFromScc = arrayValues[13]
-        self.batteryDischargeCurrent = arrayValues[14]
-        self.deviceStatus = arrayValues[15]
+        self.gridFrequency = arrayValues[1]
+        self.acOutputVoltage = arrayValues[2]
+        self.acOutputFrequency = arrayValues[3]
+        self.acOutputApparentCurrent = arrayValues[4]
+        self.acOutputActivePower = arrayValues[5]
+        self.outputLoadPercent = arrayValues[6]
+        self.busVoltage = arrayValues[7]
+        self.batteryVoltage = arrayValues[8]
+        self.batteryChargingCurrent = arrayValues[9]
+        self.batteryCapacitypercent = arrayValues[10]
+        self.inverterHeatSinkTemperature = arrayValues[11]
+        self.pvInputCurrentForBattery = arrayValues[12]
+        self.pvInputVoltage = arrayValues[13]
+        self.batteryVoltageFromScc = arrayValues[14]
+        self.batteryDischargeCurrent = arrayValues[15]
+        self.deviceStatus = arrayValues[16]
+        self.pvInputPower = arrayValues[19]
 
     def __repr__(self):
         return f'Status({self.gridVoltatge})'
