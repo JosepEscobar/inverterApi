@@ -114,31 +114,6 @@ def getDeviceStatus(dev):
     usb.util.dispose_resources(dev)
     return inverterValuesArray
 
-# def getDeviceWarnings(dev):
-
-#     interface = 0
-
-#     if dev.is_kernel_driver_active(interface):
-#         try:
-#             dev.detach_kernel_driver(interface)
-#         except usb.core.USBError as e:
-#             sys.exit("Could not detatch kernel driver from interface({0}): {1}".format(i, str(e)))
-    
-
-#     # if dev.is_kernel_driver_active(interface):
-#     #     dev.detach_kernel_driver(interface)
-#     #     dev.set_interface_altsetting(0,0)
-
-#     #We query for the inverter general status values
-#     sendCommand(dev, getCommand("QPIWS"))
-#     inverterValues = getResult(dev)
-
-#     inverterValuesArray = inverterValues.split(" ")
-    
-#     json_format = json.dumps(inverterValuesArray)
-#     print(json_format)
-#     # return inverterValues
-
 class DataSource():
     def getRating():
         inverter = getDevice(0x0665, 0x5161, None)
