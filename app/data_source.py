@@ -4,7 +4,7 @@ import usb.core, usb.util, usb.control
 import crc16
 import time
 import re
-from app.device.models import Rating, Status
+from app.device.models import Configuration, Status
 
 # COMMAND+CRC16
 def getCommand(cmd):
@@ -84,7 +84,7 @@ def getSerialNumber(dev):
     return serialNumberOutput
 
 # Inverter general status values
-def getDeviceValues(dev):
+def getStatus(dev):
     interface = 0
     if dev.is_kernel_driver_active(interface):
         try:
@@ -100,7 +100,7 @@ def getDeviceValues(dev):
     return inverterValuesArray
     
 #rating
-def getDeviceStatus(dev):
+def getConfiguration(dev):
     interface = 0
     if dev.is_kernel_driver_active(interface):
         try:
@@ -115,13 +115,13 @@ def getDeviceStatus(dev):
     return inverterValuesArray
 
 class DataSource():
-    def getRating():
+    def getConfiguration():
         inverter = getDevice(0x0665, 0x5161, None)
         if inverter:
-            output = getDeviceStatus(inverter)
-            return Rating(output)
+            output = getConfiguration(inverter)
+            return Configuration(output)
 
     def getStatus():
         inverter = getDevice(0x0665, 0x5161, None)
-        output = getDeviceValues(inverter)
+        output = getStatus(inverter)
         return Status(output)

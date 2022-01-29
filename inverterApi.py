@@ -9,9 +9,9 @@ app.config["DEBUG"] = True
 def home():
     return "<h1>inverter API</h1> <p>Documentation about inverter API. (Work in progress)</p>"
 
-@app.route('/rating/', methods=['GET'])
+@app.route('/configuration/', methods=['GET'])
 def rating():
-    rating = DataSource.getRating()
+    rating = DataSource.getConfiguration()
     json = rating.toJSON()
     return json
 

@@ -1,6 +1,7 @@
 import json
+import config.default as config
 
-class Rating():
+class Configuration():
     gridVoltatge = ""
     gridCurrent = ""
     acOutputVoltage = ""
@@ -58,7 +59,7 @@ class Rating():
         self.pvPowerBalance = arrayValues[24]
 
     def __repr__(self):
-        return f'Rating({self.gridVoltatge})'
+        return f'Configuration({self.gridVoltatge})'
 
     def __str__(self):
         return f'{self.gridVoltatge}'
@@ -70,6 +71,7 @@ class Rating():
 class Status():
     gridVoltatge = ""
     gridFrequency = ""
+    gridPower = ""
     acOutputVoltage = ""
     acOutputFrequency = ""
     acOutputApparentCurrent = ""
@@ -91,24 +93,32 @@ class Status():
         print("arrayValues")
         print(arrayValues)
       
-        self.gridVoltatge = arrayValues[0]
-        self.gridFrequency = arrayValues[1]
+        self.gridVoltatge = float(arrayValues[0])
+        self.gridFrequency = float(arrayValues[1])
         self.acOutputVoltage = float(arrayValues[2])
         self.acOutputFrequency = float(arrayValues[3])
         self.acOutputApparentCurrent = int(arrayValues[4])
         self.acOutputActivePower = int(arrayValues[5])
         self.outputLoadPercent = int(arrayValues[6])
-        self.busVoltage = arrayValues[7]
+        self.busVoltage = int(arrayValues[7])
         self.batteryVoltage = float(arrayValues[8])
         self.batteryChargingCurrent = int(arrayValues[9])
         self.batteryCapacitypercent = int(arrayValues[10])
         self.inverterHeatSinkTemperature = int(arrayValues[11])
         self.pvInputCurrentForBattery = int(arrayValues[12])
         self.pvInputVoltage = float(arrayValues[13])
-        self.batteryVoltageFromScc = arrayValues[14]
-        self.batteryDischargeCurrent = arrayValues[15]
+        self.batteryVoltageFromScc = float(arrayValues[14])
+        self.batteryDischargeCurrent = int(arrayValues[15])
         self.deviceStatus = arrayValues[16]
         self.pvInputPower = int(arrayValues[19])
+        if self.batteryChargingCurrent > 0 and self.acOutputActivePower > 0:
+            batteryCurrent = (self.batteryChargingCurrent * config.CAHRGING_POWER) / self.gridVoltatge
+            gridCurrent = self.acOutputActivePower/self.gridVoltatge
+            self.gridPower = int(self.gridVoltatge * (batteryCurrent + gridCurrent))
+        elif self.acOutputActivePower < 0:
+            self.gridPower = int(self.gridVoltatge * self.acOutputActivePower)
+        else:
+            self.gridPower = 0
 
     def __repr__(self):
         return f'Status({self.gridVoltatge})'
