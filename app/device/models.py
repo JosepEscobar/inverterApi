@@ -1,6 +1,7 @@
 import json
+import config.default as config
 
-class Rating():
+class Configuration():
     gridVoltatge = ""
     gridCurrent = ""
     acOutputVoltage = ""
@@ -58,7 +59,7 @@ class Rating():
         self.pvPowerBalance = arrayValues[24]
 
     def __repr__(self):
-        return f'Rating({self.gridVoltatge})'
+        return f'Configuration({self.gridVoltatge})'
 
     def __str__(self):
         return f'{self.gridVoltatge}'
@@ -70,6 +71,7 @@ class Rating():
 class Status():
     gridVoltatge = ""
     gridFrequency = ""
+    gridPower = ""
     acOutputVoltage = ""
     acOutputFrequency = ""
     acOutputApparentCurrent = ""
@@ -109,6 +111,14 @@ class Status():
         self.batteryDischargeCurrent = int(arrayValues[15])
         self.deviceStatus = arrayValues[16]
         self.pvInputPower = int(arrayValues[19])
+        if self.batteryChargingCurrent > 0 and self.acOutputActivePower > 0:
+            batteryCurrent = (self.batteryChargingCurrent * config.CAHRGING_POWER) / self.gridVoltatge
+            gridCurrent = self.acOutputActivePower/self.gridVoltatge
+            self.gridPower = int(self.gridVoltatge * (batteryCurrent + gridCurrent))
+        elif self.acOutputActivePower < 0:
+            self.gridPower = int(self.gridVoltatge * self.acOutputActivePower)
+        else:
+            self.gridPower = 0
 
     def __repr__(self):
         return f'Status({self.gridVoltatge})'
