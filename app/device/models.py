@@ -117,12 +117,10 @@ class Status():
         self.batteryDischargePower = self.batteryDischargeCurrent * self.batteryVoltage
         self.batteryChargingPower = self.batteryChargingCurrent * config.CAHRGING_VOLTATGE
         
-        if self.batteryChargingCurrent > 0 and self.acOutputActivePower > 0 and self.gridVoltatge > 0:
-            batteryCurrent = (self.batteryChargingCurrent * config.CAHRGING_VOLTATGE) / self.gridVoltatge
-            gridCurrent = self.acOutputActivePower/self.gridVoltatge
-            self.gridPower = int(self.gridVoltatge * (batteryCurrent + gridCurrent))
+        if  self.gridVoltatge > 0 and self.batteryDischargePower == 0:
+            self.gridPower = (self.batteryChargingPower - self.pvInputPower) + self.acOutputActivePower
         else:
-            self.gridPower = int(self.gridVoltatge * self.acOutputActivePower)
+            self.gridPower = 0
 
     def __repr__(self):
         return f'Status({self.gridVoltatge})'
