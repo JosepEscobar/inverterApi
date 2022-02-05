@@ -80,6 +80,8 @@ class Status():
     busVoltage = ""
     batteryVoltage = ""
     batteryChargingCurrent = ""
+    batteryChargingPower = ""
+    batteryDischargePower = ""
     batteryCapacitypercent = ""
     inverterHeatSinkTemperature = ""
     pvInputCurrentForBattery = ""
@@ -103,20 +105,20 @@ class Status():
         self.busVoltage = int(arrayValues[7])
         self.batteryVoltage = float(arrayValues[8])
         self.batteryChargingCurrent = int(arrayValues[9])
+        self.batteryDischargeCurrent = int(arrayValues[15])
         self.batteryCapacitypercent = int(arrayValues[10])
         self.inverterHeatSinkTemperature = int(arrayValues[11])
         self.pvInputCurrentForBattery = int(arrayValues[12])
         self.pvInputVoltage = float(arrayValues[13])
         self.batteryVoltageFromScc = float(arrayValues[14])
-        self.batteryDischargeCurrent = int(arrayValues[15])
         self.deviceStatus = arrayValues[16]
         self.pvInputPower = int(arrayValues[19])
-        if self.batteryChargingCurrent > 0 and self.acOutputActivePower > 0:
-            batteryCurrent = (self.batteryChargingCurrent * config.CAHRGING_POWER) / self.gridVoltatge
-            gridCurrent = self.acOutputActivePower/self.gridVoltatge
-            self.gridPower = int(self.gridVoltatge * (batteryCurrent + gridCurrent))
-        elif self.acOutputActivePower < 0:
-            self.gridPower = int(self.gridVoltatge * self.acOutputActivePower)
+
+        self.batteryDischargePower = self.batteryDischargeCurrent * self.batteryVoltage
+        self.batteryChargingPower = self.batteryChargingCurrent * config.CAHRGING_VOLTATGE
+        
+        if  self.gridVoltatge > 0 and self.batteryDischargePower == 0:
+            self.gridPower = (self.batteryChargingPower - self.pvInputPower) + self.acOutputActivePower
         else:
             self.gridPower = 0
 
