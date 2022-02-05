@@ -12,3 +12,7 @@ This project has been designed to take monitoring data from Voltronic, Axpert, M
 - Execute `sudo systemctl daemon-reload` to reload daemon
 - Execute `sudo systemctl enable inverterApi.service` to enable our service
 - Execute `sudo systemctl start inverterApi.service` to start our new service! Lets go! 
+
+## Endpoints
+- /status/
+- /configuration/
