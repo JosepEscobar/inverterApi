@@ -4,7 +4,7 @@ import usb.core, usb.util, usb.control
 import crc16
 import time
 import re
-from app.device.models import Configuration, Status
+from app.device.models import Configuration, Status, FlagStatus
 
 # COMMAND+CRC16
 def getCommand(cmd):
@@ -92,6 +92,7 @@ def getStatus(dev):
         except usb.core.USBError as e:
             sys.exit("Could not detatch kernel driver from interface({0}): {1}".format(i, str(e)))
 
+    # 2.7 QPIGS<cr>: Device general status parameters inquiry
     sendCommand(dev, getCommand("QPIGS"))
     inverterValues = getResult(dev).replace('(', '')
     inverterValuesArray = inverterValues.split(" ")
@@ -108,11 +109,27 @@ def getConfiguration(dev):
         except usb.core.USBError as e:
             sys.exit("Could not detatch kernel driver from interface({0}): {1}".format(i, str(e)))
     
+    # 2.5 QPIRI<cr>: Device Rating Information inquiry
     sendCommand(dev, getCommand("QPIRI"))
     inverterValues = getResult(dev).replace('(', '')
     inverterValuesArray = inverterValues.split(" ")
     usb.util.dispose_resources(dev)
     return inverterValuesArray
+
+
+def getDeviceFlagStatus(dev):
+    interface = 0
+    if dev.is_kernel_driver_active(interface):
+        try:
+            dev.detach_kernel_driver(interface)
+        except usb.core.USBError as e:
+            sys.exit("Could not detatch kernel driver from interface({0}): {1}".format(i, str(e)))
+    
+    # 2.6 QFLAG<cr>: Device flag status inquiry
+    sendCommand(dev, getCommand("QFLAG"))
+    inverterValues = getResult(dev).replace('(', '')
+    usb.util.dispose_resources(dev)
+    return inverterValues
 
 class DataSource():
     def getConfiguration():
@@ -123,5 +140,14 @@ class DataSource():
 
     def getStatus():
         inverter = getDevice(0x0665, 0x5161, None)
-        output = getStatus(inverter)
-        return Status(output)
+        if inverter:
+            output = getStatus(inverter)
+            return Status(output)
+
+    def getFlagStatus():
+        inverter = getDevice(0x0665, 0x5161, None)
+        if inverter:
+            output = getDeviceFlagStatus(inverter)
+            return FlagStatus(output)
+
+
