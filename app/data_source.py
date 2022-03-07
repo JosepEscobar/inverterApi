@@ -4,7 +4,9 @@ import usb.core, usb.util, usb.control
 import crc16
 import time
 import re
-from app.device.models import Configuration, Status, FlagStatus
+from app.device.models.Configuration import Configuration
+from app.device.models.Status import Status
+from app.device.models.FlagStatus import FlagStatus
 
 # COMMAND+CRC16
 def getCommand(cmd):
