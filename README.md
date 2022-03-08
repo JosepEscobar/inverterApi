@@ -16,3 +16,4 @@ This project has been designed to take monitoring data from Voltronic, Axpert, M
 ## Endpoints
 - /status/
 - /configuration/
+- /flag-status/
