@@ -4,6 +4,7 @@ from app.data_source import DataSource
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+dataSource = DataSource()
 
 @app.route('/', methods=['GET'])
 def home():
@@ -11,20 +12,20 @@ def home():
 
 @app.route('/configuration/', methods=['GET'])
 def rating():
-    rating = DataSource.getConfiguration()
+    rating = dataSource.getConfiguration()
     json = rating.toJSON()
     return json
 
 
 @app.route('/status/', methods=['GET'])
 def status():
-    status = DataSource.getStatus()
+    status = dataSource.getStatus()
     json = status.toJSON()
     return json
 
 @app.route('/flag-status/', methods=['GET'])
 def flagStatus():
-    status = DataSource.getFlagStatus()
+    status = dataSource.getFlagStatus()
     json = status.toJSON()
     return json
 
