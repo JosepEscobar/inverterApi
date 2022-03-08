@@ -22,4 +22,10 @@ def status():
     json = status.toJSON()
     return json
 
+@app.route('/flag-status/', methods=['GET'])
+def flagStatus():
+    status = DataSource.getFlagStatus()
+    json = status.toJSON()
+    return json
+
 app.run(host="0.0.0.0")
