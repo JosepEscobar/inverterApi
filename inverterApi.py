@@ -9,7 +9,6 @@ class HelloRoute(RequestHandler):
 class StatusRoute(RequestHandler):
     dataSource = None
     def initialize(self):
-        print(self.dataSource)
         self.dataSource = DataSource()
     
     def get(self):
