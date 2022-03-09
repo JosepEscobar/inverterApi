@@ -9,9 +9,6 @@ from app.device.models.Status import Status
 from app.device.models.FlagStatus import FlagStatus
 
 class Inverter:
-    deviceCache = None
-    deviceFlagStatusCache = None
-
     # COMMAND+CRC16
     def getCommand(self, cmd):
         cmd = cmd.encode('utf-8')
@@ -47,9 +44,6 @@ class Inverter:
         return re.sub("[^0-9]", "", string)
 
     def getDevice(self, vendorId, productId, serialNumberId = None):
-        if self.deviceCache is not None:
-            return self.deviceCache 
-
         device = None
         devList = usb.core.find(find_all=True, 
                                 idVendor=vendorId, 
@@ -69,7 +63,6 @@ class Inverter:
                     #it matches with the device, we'll return that device
                     device = dev
                     break
-        self.deviceCache = device
         return device
 
     def getSerialNumber(self, dev):
@@ -130,13 +123,7 @@ class Inverter:
             try:
                 dev.detach_kernel_driver(interface)
             except usb.core.USBError as e:
-                if self.deviceFlagStatusCache is not None:
-                    pass
-                else:
-                    sys.exit("Could not detatch kernel driver from interface({0}): {1}".format(i, str(e)))
-        
-        if self.deviceFlagStatusCache is not None:
-            return self.deviceFlagStatusCache
+                sys.exit("Could not detatch kernel driver from interface({0}): {1}".format(i, str(e)))
 
         # 2.6 QFLAG<cr>: Device flag status inquiry
         self.sendCommand(dev, self.getCommand("QFLAG"))
@@ -151,6 +138,7 @@ class DataSource():
     def __init__(self):
         self.inverter = Inverter()
         self.device = self.inverter.getDevice(0x0665, 0x5161, None)
+        print("🐁 initialized datasource")
 
     def getConfiguration(self):
         if self.device:
