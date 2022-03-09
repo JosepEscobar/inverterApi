@@ -5,7 +5,7 @@ This project has been designed to take monitoring data from Voltronic, Axpert, M
 ## Pre Requisites
 - systemd installed in your system
 - pyUSB installed
-- WIP
+- sudo pip install tornado
 
 ## Start as a service
 - Edit and Copy inverterApi.service into `/etc/systemd/system/`

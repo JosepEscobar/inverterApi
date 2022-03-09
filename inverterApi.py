@@ -1,32 +1,52 @@
-import flask
-import json
+from tornado.web import Application, RequestHandler
+from tornado.ioloop import IOLoop
 from app.data_source import DataSource
 
-app = flask.Flask(__name__)
-app.config["DEBUG"] = True
-dataSource = DataSource()
+class HelloRoute(RequestHandler):
+    def get(self):
+        self.write({'message': 'hello world'})
 
-@app.route('/', methods=['GET'])
-def home():
-    return "<h1>inverter API</h1> <p>Documentation about inverter API. (Work in progress)</p>"
+class StatusRoute(RequestHandler):
+    dataSource = None
+    def initialize(self):
+        print(self.dataSource)
+        self.dataSource = DataSource()
+    
+    def get(self):
+        status = self.dataSource.getStatus()
+        json = status.toJSON()
+        self.write(json)
 
-@app.route('/configuration/', methods=['GET'])
-def rating():
-    rating = dataSource.getConfiguration()
-    json = rating.toJSON()
-    return json
+class ConfigurationRoute(RequestHandler):
+    dataSource = None
+    def initialize(self):
+        self.dataSource = DataSource()
 
+    def get(self):
+        configuration = self.dataSource.getConfiguration()
+        json = configuration.toJSON()
+        self.write(json)
 
-@app.route('/status/', methods=['GET'])
-def status():
-    status = dataSource.getStatus()
-    json = status.toJSON()
-    return json
+class FlagStatusRoute(RequestHandler):
+    dataSource = None
+    def initialize(self):
+        self.dataSource = DataSource()
 
-@app.route('/flag-status/', methods=['GET'])
-def flagStatus():
-    status = dataSource.getFlagStatus()
-    json = status.toJSON()
-    return json
+    def get(self):
+        status = self.dataSource.getFlagStatus()
+        json = status.toJSON()
+        self.write(json)
 
-app.run(host="0.0.0.0")
+def make_app():
+    urls = [
+        ("/", HelloRoute),
+        ("/status/", StatusRoute),
+        ("/configuration/", ConfigurationRoute),
+        ("/flag-status/", FlagStatusRoute)
+    ]
+    return Application(urls)
+  
+if __name__ == '__main__':
+    app = make_app()
+    app.listen(5000)
+    IOLoop.instance().start()
